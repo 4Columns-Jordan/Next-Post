@@ -20,3 +20,22 @@ function FCNP__addNextButton(){
   echo FCNP__getPostUrl();
 
 }
+add_action('genesis_after_entry_content', 'FCNP__addNextButton');
+
+function FCNP__getPostUrl($id = null, $direction = 1){
+  if(!isset($id)) return;
+  // setting up the query
+  $queryArgs = array(
+    'post_type' => 'post',
+    'posts_per_page' => 1,
+    'orderby' => 'date',
+    'order' => 'ASC',
+    'date_query' => array(
+      array(
+        'after' => get_the_date('Y-m-d H:i:s', $id),
+      ),
+    ),
+  );
+
+  return $id;
+}
