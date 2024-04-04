@@ -32,18 +32,29 @@ add_action('genesis_after_entry_content', 'FCNP__addNextButton');
  *  otherwise ir returns a string of the post url
  */
 function FCNP__getPostUrl($id = null, $direction = 'after'){
+  // return if no id supplied
   if(!isset($id)) return;
+  // return if the direction is using the incorect format
+  if(!in_array($direction, array('after', 'before'))) return;
   // setting up the query
   $queryArgs = array(
     'post_type' => 'post',
     'posts_per_page' => 1,
     'orderby' => 'date',
-    'order' => 'ASC',
     'post__not_in' => array($id),
   );
+  // setting the order based on the direction param
+  if($direction === 'before'){
+    // before needs to be descending
+    $order = 'DESC';
+  } else{
+    // otherwise it needs to be ascending
+    $order = 'ASC';
+  }
+  // setting order param on query
+  $queryArgs['order'] = $order;
   // setting the date query, if the direction variable exists
-  // and it's a string
-  if(!empty($direction) && is_string($direction)){
+  if(!empty($direction)){
     // set the date query with the direction param
     $queryArgs['date_query'] = array(
       array(
