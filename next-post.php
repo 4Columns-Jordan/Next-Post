@@ -8,15 +8,19 @@ Author: The Four Columns Team
 Author URI: https: //fourcolumns.net
 License: GPLv2
 */
-
+// adding the stylesheet for the buttons
 function FCNP__addStyles(){
+  // only add stylesheet on single post pages
   if(!is_single() || 'post' != get_post_type()) return;
+  // enqueue stylesheet
   wp_enqueue_style('next-post-style', plugin_dir_url(__FILE__) . 'style.css', array(), filemtime(plugin_dir_path(__FILE__) . 'style.css'), false);
 }
 add_action('wp_enqueue_scripts', 'FCNP__addStyles');
 
 // This function adds the next button
 function FCNP__addPostButtons(){
+  // only add the buttons on single post pages
+  if(!is_single() || 'post' != get_post_type()) return;
   // getting the current post's ID
   $cuttentId = get_the_ID();
   // including the template file for the buttons
